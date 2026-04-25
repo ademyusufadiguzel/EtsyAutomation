@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "Bash(npx netlify-cli:*)",
+      "Bash(netlify status:*)",
+      "Bash(netlify deploy:*)",
+      "Bash(gh auth:*)",
+      "Bash(git:*)",
+      "WebFetch(domain:lostenadem.netlify.app)",
+      "Bash(brew install *)"
+    ]
+  }
+}
