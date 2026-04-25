@@ -6,7 +6,7 @@ export function SettingsPage() {
   const update = (field, value) => setSettings((prev) => ({ ...prev, [field]: value }))
 
   return (
-    <div className="p-8 max-w-xl">
+    <div className="p-4 md:p-8 max-w-xl">
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gray-800">API Ayarlari</h2>
         <p className="text-sm text-gray-500 mt-1">

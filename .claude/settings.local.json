@@ -10,7 +10,8 @@
       "Bash(gh auth:*)",
       "Bash(git:*)",
       "WebFetch(domain:lostenadem.netlify.app)",
-      "Bash(brew install *)"
+      "Bash(brew install *)",
+      "Bash(gh repo *)"
     ]
   }
 }

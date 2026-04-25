@@ -46,7 +46,7 @@ export function ProfilesPage() {
   }
 
   return (
-    <div className="p-8 max-w-xl">
+    <div className="p-4 md:p-8 max-w-xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-bold text-gray-800">Listeleme Profilleri</h2>

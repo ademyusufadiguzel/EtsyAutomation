@@ -68,7 +68,7 @@ Bu verileri tarayıcınızın geliştirici araçlarından istediğiniz zaman sil
 
 export function PrivacyPage() {
   return (
-    <div className="p-8 max-w-3xl">
+    <div className="p-4 md:p-8 max-w-3xl">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Gizlilik Politikası</h2>
         <p className="text-sm text-gray-400">Son güncelleme: Nisan 2026</p>

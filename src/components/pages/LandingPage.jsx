@@ -222,7 +222,7 @@ export function LandingPage() {
 
       {/* Stats */}
       <section className="border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-8 py-10 grid grid-cols-4 gap-6 text-center">
+        <div className="max-w-4xl mx-auto px-8 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {STATS.map((s) => (
             <div key={s.label}>
               <div className="text-3xl font-bold text-gray-900 mb-1">{s.value}</div>
@@ -233,7 +233,7 @@ export function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="px-8 py-20 bg-gray-50">
+      <section className="px-4 md:px-8 py-14 md:py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Her Şey Tek Araçta</h2>
@@ -242,7 +242,7 @@ export function LandingPage() {
               sade ve hızlı bir arayüzde.
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {FEATURES.map((f) => (
               <div
                 key={f.title}
@@ -260,13 +260,13 @@ export function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="px-8 py-20 bg-white">
+      <section className="px-4 md:px-8 py-14 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Nasıl Çalışır?</h2>
             <p className="text-gray-500">3 adımda Etsy'e toplu yükleme.</p>
           </div>
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {STEPS.map((step, i) => (
               <div key={step.number} className="relative">
                 {i < STEPS.length - 1 && (
@@ -289,7 +289,7 @@ export function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="px-8 py-20 bg-gradient-to-br from-orange-500 to-orange-600">
+      <section className="px-4 md:px-8 py-14 md:py-20 bg-gradient-to-br from-orange-500 to-orange-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Etsy Mağazanızı Büyütmeye Başlayın

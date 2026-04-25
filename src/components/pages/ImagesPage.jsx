@@ -8,7 +8,7 @@ export function ImagesPage() {
   const images = allImages()
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gray-800">Gorsel Yonetimi</h2>
         <p className="text-sm text-gray-500 mt-1">
@@ -22,7 +22,7 @@ export function ImagesPage() {
       {images.length > 0 && (
         <div className="mt-6">
           <p className="text-sm text-gray-500 mb-3">{images.length} gorsel yuklendi</p>
-          <div className="grid grid-cols-6 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
             {images.map(({ name, objectURL }) => (
               <div key={name} className="relative group">
                 <img

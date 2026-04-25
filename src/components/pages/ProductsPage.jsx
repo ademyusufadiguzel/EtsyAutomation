@@ -42,7 +42,7 @@ export function ProductsPage() {
   const failCount = results.filter((r) => !r.success).length
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-800">Urunler</h2>
         <button

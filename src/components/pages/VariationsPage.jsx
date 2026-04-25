@@ -14,7 +14,7 @@ export function VariationsPage() {
   const selectedProduct = products.find((p) => p.id === selectedId)
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gray-800">Varyasyon Editoru</h2>
         <p className="text-sm text-gray-500 mt-1">
@@ -36,8 +36,8 @@ export function VariationsPage() {
           </button>
         </div>
       ) : (
-        <div className="flex gap-6">
-          <div className="w-64 flex-shrink-0">
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-64 md:flex-shrink-0">
             <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Urunler</p>
             <ul className="space-y-1">
               {products.map((p) => (
