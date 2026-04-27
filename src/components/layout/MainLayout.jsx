@@ -8,6 +8,7 @@ import { VariationsPage } from '../pages/VariationsPage'
 import { ProfilesPage } from '../pages/ProfilesPage'
 import { SettingsPage } from '../pages/SettingsPage'
 import { PrivacyPage } from '../pages/PrivacyPage'
+import { LoginPage } from '../pages/LoginPage'
 
 const pages = {
   landing: LandingPage,
@@ -19,10 +20,24 @@ const pages = {
   privacy: PrivacyPage,
 }
 
+const PUBLIC_PAGES = ['landing', 'privacy']
+
 export function MainLayout() {
-  const { activePage } = useApp()
+  const { activePage, user, loading } = useApp()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const Page = pages[activePage] ?? LandingPage
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-sm text-gray-400">Yukleniyor...</div>
+      </div>
+    )
+  }
+
+  if (!user && !PUBLIC_PAGES.includes(activePage)) {
+    return <LoginPage />
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -77,7 +92,7 @@ export function MainLayout() {
             >
               Etsy Developer Portal
             </a>
-            <span>Etsy, Inc. ile bağlantılı değildir.</span>
+            <span>Etsy, Inc. ile baglantili degildir.</span>
           </div>
         </footer>
       </div>

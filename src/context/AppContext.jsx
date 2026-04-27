@@ -3,6 +3,7 @@ import { useInventory } from '../hooks/useInventory'
 import { useImages } from '../hooks/useImages'
 import { useVariations } from '../hooks/useVariations'
 import { useProfiles } from '../hooks/useProfiles'
+import { useAuth } from '../hooks/useAuth'
 
 const LS_SETTINGS = 'etsy_settings'
 
@@ -31,6 +32,7 @@ export function AppProvider({ children }) {
     localStorage.setItem(LS_SETTINGS, JSON.stringify(safeSettings))
   }, [settings])
 
+  const auth = useAuth()
   const inventory = useInventory()
   const images = useImages()
   const variations = useVariations(inventory.updateProduct)
@@ -38,7 +40,7 @@ export function AppProvider({ children }) {
 
   return (
     <AppContext.Provider
-      value={{ activePage, setActivePage, settings, setSettings, ...inventory, ...images, ...variations, ...profilesState }}
+      value={{ activePage, setActivePage, settings, setSettings, ...auth, ...inventory, ...images, ...variations, ...profilesState }}
     >
       {children}
     </AppContext.Provider>

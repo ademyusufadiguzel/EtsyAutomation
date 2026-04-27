@@ -1,5 +1,6 @@
 import { useApp } from '../../context/AppContext'
 
+
 const PAGES = [
   { id: 'landing', label: 'Anasayfa' },
   { id: 'products', label: 'Urunler' },
@@ -10,7 +11,13 @@ const PAGES = [
 ]
 
 export function Sidebar({ onClose }) {
-  const { activePage, setActivePage } = useApp()
+  const { activePage, setActivePage, user, signOut } = useApp()
+
+  const handleSignOut = async () => {
+    await signOut()
+    setActivePage('landing')
+    onClose?.()
+  }
 
   const navigate = (id) => {
     setActivePage(id)
@@ -37,26 +44,39 @@ export function Sidebar({ onClose }) {
           <li key={page.id}>
             <button
               onClick={() => navigate(page.id)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activePage === page.id
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === page.id
                   ? 'bg-orange-50 text-orange-600'
                   : 'text-gray-600 hover:bg-gray-100'
-              }`}
+                }`}
             >
               {page.label}
             </button>
           </li>
         ))}
       </ul>
-      <div className="px-4 py-4 border-t border-gray-100">
+      <div className="px-4 py-4 border-t border-gray-100 space-y-2">
         <button
           onClick={() => navigate('privacy')}
-          className={`text-xs transition-colors ${
-            activePage === 'privacy' ? 'text-orange-600' : 'text-gray-400 hover:text-gray-600'
-          }`}
+          className={`block text-xs transition-colors ${activePage === 'privacy' ? 'text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
         >
-          Gizlilik Politikası
+          Gizlilik Politikasi
         </button>
+        {user && (
+          <button
+            onClick={handleSignOut}
+            className="block text-xs text-red-400 hover:text-red-600 transition-colors"
+          >
+            Cikis Yap
+          </button>
+        )}
+        {!user && (
+          <button
+            onClick={() => navigate('products')}
+            className="block text-xs text-orange-500 hover:text-orange-600 transition-colors"
+          >
+            Giris Yap
+          </button>
+        )}
       </div>
     </nav>
   )
