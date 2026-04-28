@@ -1,22 +1,63 @@
 import { useState } from 'react'
 import { useApp } from '../../context/AppContext'
 
+function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    </svg>
+  )
+}
+
 export function LoginPage() {
-  const { signIn, setActivePage } = useApp()
+  const { signIn, signUp, signInWithGoogle, setActivePage } = useApp()
+  const [tab, setTab] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
+    setSuccess(null)
     setLoading(true)
-    const { error } = await signIn(email, password)
-    setLoading(false)
-    if (error) {
-      setError('E-posta veya sifre hatali. Lutfen tekrar deneyin.')
+
+    if (tab === 'login') {
+      const { error } = await signIn(email, password)
+      setLoading(false)
+      if (error) setError('E-posta veya sifre hatali. Lutfen tekrar deneyin.')
+    } else {
+      const { error } = await signUp(email, password)
+      setLoading(false)
+      if (error) {
+        setError(error.message?.includes('already') ? 'Bu e-posta zaten kayitli.' : 'Kayit sirasinda hata olustu.')
+      } else {
+        setSuccess('Kayit basarili! E-postanizi kontrol edin, onay linkine tiklayin.')
+        setEmail('')
+        setPassword('')
+      }
     }
+  }
+
+  const handleGoogle = async () => {
+    setGoogleLoading(true)
+    const { error } = await signInWithGoogle()
+    if (error) {
+      setError('Google ile giris yapilamadi.')
+      setGoogleLoading(false)
+    }
+  }
+
+  const switchTab = (t) => {
+    setTab(t)
+    setError(null)
+    setSuccess(null)
   }
 
   return (
@@ -30,9 +71,43 @@ export function LoginPage() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-8 py-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-1">Giris Yap</h2>
-          <p className="text-sm text-gray-400 mb-6">Devam etmek icin hesabiniza giris yapin.</p>
+          {/* Tabs */}
+          <div className="flex rounded-lg bg-gray-100 p-1 mb-6">
+            <button
+              onClick={() => switchTab('login')}
+              className={`flex-1 text-sm font-medium py-1.5 rounded-md transition-colors ${
+                tab === 'login' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Giris Yap
+            </button>
+            <button
+              onClick={() => switchTab('register')}
+              className={`flex-1 text-sm font-medium py-1.5 rounded-md transition-colors ${
+                tab === 'register' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Kayit Ol
+            </button>
+          </div>
 
+          {/* Google button */}
+          <button
+            onClick={handleGoogle}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium py-2.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+          >
+            <GoogleIcon />
+            {googleLoading ? 'Yonlendiriliyor...' : 'Google ile devam et'}
+          </button>
+
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400">veya</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
@@ -53,13 +128,22 @@ export function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
+                minLength={6}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"
               />
+              {tab === 'register' && (
+                <p className="text-xs text-gray-400 mt-1">En az 6 karakter</p>
+              )}
             </div>
 
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-3 py-2">
                 {error}
+              </div>
+            )}
+            {success && (
+              <div className="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-3 py-2">
+                {success}
               </div>
             )}
 
@@ -68,7 +152,7 @@ export function LoginPage() {
               disabled={loading}
               className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg transition-colors text-sm"
             >
-              {loading ? 'Giris yapiliyor...' : 'Giris Yap'}
+              {loading ? (tab === 'login' ? 'Giris yapiliyor...' : 'Kayit olunuyor...') : (tab === 'login' ? 'Giris Yap' : 'Kayit Ol')}
             </button>
           </form>
         </div>
