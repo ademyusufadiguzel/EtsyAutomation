@@ -71,6 +71,30 @@ export async function uploadListingImage(listingId, imageFile, settings) {
   return handleResponse(res)
 }
 
+export async function getShop(settings) {
+  const creds = getCredentials(settings)
+  const res = await fetch(`${BASE_URL}/application/shops/${creds.shopId}`, { headers: headers(creds) })
+  return handleResponse(res)
+}
+
+export async function getActiveListings(settings) {
+  const creds = getCredentials(settings)
+  const res = await fetch(`${BASE_URL}/application/shops/${creds.shopId}/listings/active?limit=25`, { headers: headers(creds) })
+  return handleResponse(res)
+}
+
+export async function getReceipts(settings) {
+  const creds = getCredentials(settings)
+  const res = await fetch(`${BASE_URL}/application/shops/${creds.shopId}/receipts?limit=25`, { headers: headers(creds) })
+  return handleResponse(res)
+}
+
+export async function getTransactions(settings) {
+  const creds = getCredentials(settings)
+  const res = await fetch(`${BASE_URL}/application/shops/${creds.shopId}/transactions?limit=25`, { headers: headers(creds) })
+  return handleResponse(res)
+}
+
 export async function publishProducts(products, onProgress, settings, profile = {}) {
   const results = []
 

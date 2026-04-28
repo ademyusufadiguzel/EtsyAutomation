@@ -22,7 +22,7 @@ function loadSettings() {
 
 function pageFromPath() {
   const path = window.location.pathname.replace('/', '') || 'landing'
-  const valid = ['landing', 'products', 'images', 'variations', 'profiles', 'settings', 'privacy']
+  const valid = ['landing', 'dashboard', 'products', 'images', 'variations', 'profiles', 'settings', 'privacy']
   return valid.includes(path) ? path : 'landing'
 }
 

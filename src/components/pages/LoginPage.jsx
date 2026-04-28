@@ -32,6 +32,7 @@ export function LoginPage() {
       const { error } = await signIn(email, password)
       setLoading(false)
       if (error) setError('E-posta veya sifre hatali. Lutfen tekrar deneyin.')
+      else setActivePage('dashboard')
     } else {
       const { error } = await signUp(email, password)
       setLoading(false)

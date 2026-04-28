@@ -233,7 +233,7 @@ export function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="px-4 md:px-8 py-14 md:py-20 bg-gray-50">
+      <section id="ozellikler" className="px-4 md:px-8 py-14 md:py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Her Şey Tek Araçta</h2>
@@ -260,7 +260,7 @@ export function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="px-4 md:px-8 py-14 md:py-20 bg-white">
+      <section id="nasil-calisir" className="px-4 md:px-8 py-14 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Nasıl Çalışır?</h2>
