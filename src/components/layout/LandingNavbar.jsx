@@ -1,102 +1,138 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from '../../context/AppContext'
 
 export function LandingNavbar() {
   const { user, setActivePage } = useApp()
+  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', handler)
+    return () => window.removeEventListener('scroll', handler)
+  }, [])
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     setOpen(false)
   }
 
+  const navStyle = {
+    position: 'fixed',
+    top: 0, left: 0, right: 0,
+    zIndex: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: scrolled ? '16px 60px' : '28px 60px',
+    transition: 'all 0.4s',
+    background: scrolled ? 'rgba(17,3,8,0.88)' : 'transparent',
+    backdropFilter: scrolled ? 'blur(16px)' : 'none',
+    borderBottom: scrolled ? '1px solid rgba(180,80,80,0.15)' : 'none',
+  }
+
+  const logoStyle = {
+    fontFamily: "'Cormorant Garamond', serif",
+    fontStyle: 'italic',
+    fontWeight: 400,
+    fontSize: 24,
+    color: '#e8d5c4',
+    letterSpacing: '0.02em',
+    textDecoration: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+  }
+
+  const linkStyle = {
+    fontFamily: "'Cinzel', serif",
+    fontSize: 11,
+    fontWeight: 400,
+    letterSpacing: '0.18em',
+    color: '#c4a898',
+    textDecoration: 'none',
+    textTransform: 'uppercase',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    transition: 'color 0.2s',
+  }
+
+  const ctaStyle = {
+    fontFamily: "'Cinzel', serif",
+    fontSize: 11,
+    letterSpacing: '0.2em',
+    textTransform: 'uppercase',
+    color: '#110308',
+    background: '#e8d5c4',
+    border: 'none',
+    padding: '10px 24px',
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+  }
+
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
-      <div className="max-w-6xl mx-auto px-4 md:px-8 flex items-center justify-between h-14">
-        {/* Logo */}
-        <button
-          onClick={() => setActivePage('landing')}
-          className="font-bold text-gray-900 text-base"
-        >
-          Etsy Auto-Lister <span className="text-orange-500">Pro</span>
+    <>
+      <nav style={navStyle}>
+        <button style={logoStyle} onClick={() => { setActivePage('landing'); setOpen(false) }}>
+          Etsy Auto-Lister Pro
         </button>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          <button
-            onClick={() => scrollTo('ozellikler')}
-            className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Ozellikler
-          </button>
-          <button
-            onClick={() => scrollTo('nasil-calisir')}
-            className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Nasil Calisir
-          </button>
-          <button
-            onClick={() => setActivePage('privacy')}
-            className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Gizlilik
-          </button>
-        </nav>
+        {/* Desktop links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 40 }} className="hidden-mobile">
+          <button style={linkStyle} onClick={() => scrollTo('ozellikler')}>Özellikler</button>
+          <button style={linkStyle} onClick={() => scrollTo('nasil-calisir')}>Nasıl Çalışır</button>
+          <button style={linkStyle} onClick={() => setActivePage('privacy')}>Gizlilik</button>
+        </div>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          {user ? (
-            <button
-              onClick={() => setActivePage('dashboard')}
-              className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-            >
-              Uygulamaya Git
-            </button>
-          ) : (
-            <button
-              onClick={() => setActivePage('products')}
-              className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-            >
-              Giris Yap
-            </button>
-          )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }} className="hidden-mobile">
+          <button
+            style={ctaStyle}
+            onClick={() => setActivePage(user ? 'dashboard' : 'products')}
+            onMouseEnter={(e) => e.target.style.background = '#c9a96e'}
+            onMouseLeave={(e) => e.target.style.background = '#e8d5c4'}
+          >
+            {user ? 'Dashboard' : 'Giriş Yap'}
+          </button>
         </div>
 
         {/* Mobile hamburger */}
         <button
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden text-gray-600 hover:text-gray-900 p-1"
+          style={{ ...linkStyle, padding: 4, display: 'none' }}
+          className="show-mobile"
         >
-          {open ? (
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2}>
-              <line x1="3" y1="6" x2="21" y2="6" strokeLinecap="round" />
-              <line x1="3" y1="12" x2="21" y2="12" strokeLinecap="round" />
-              <line x1="3" y1="18" x2="21" y2="18" strokeLinecap="round" />
-            </svg>
-          )}
+          {open ? '✕' : '☰'}
         </button>
-      </div>
+      </nav>
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1">
-          <button onClick={() => scrollTo('ozellikler')} className="block w-full text-left text-sm text-gray-600 py-2">Ozellikler</button>
-          <button onClick={() => scrollTo('nasil-calisir')} className="block w-full text-left text-sm text-gray-600 py-2">Nasil Calisir</button>
-          <button onClick={() => { setActivePage('privacy'); setOpen(false) }} className="block w-full text-left text-sm text-gray-600 py-2">Gizlilik</button>
-          <div className="pt-2 border-t border-gray-100">
-            <button
-              onClick={() => { setActivePage(user ? 'dashboard' : 'products'); setOpen(false) }}
-              className="w-full bg-orange-500 text-white text-sm font-medium px-4 py-2 rounded-lg"
-            >
-              {user ? 'Uygulamaya Git' : 'Giris Yap'}
+        <div style={{
+          position: 'fixed', top: 60, left: 0, right: 0, zIndex: 99,
+          background: 'rgba(17,3,8,0.97)', borderBottom: '1px solid rgba(180,80,80,0.15)',
+          padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 4,
+        }}>
+          <button style={{ ...linkStyle, textAlign: 'left', padding: '10px 0' }} onClick={() => scrollTo('ozellikler')}>Özellikler</button>
+          <button style={{ ...linkStyle, textAlign: 'left', padding: '10px 0' }} onClick={() => scrollTo('nasil-calisir')}>Nasıl Çalışır</button>
+          <button style={{ ...linkStyle, textAlign: 'left', padding: '10px 0' }} onClick={() => { setActivePage('privacy'); setOpen(false) }}>Gizlilik</button>
+          <div style={{ paddingTop: 12, borderTop: '1px solid rgba(180,80,80,0.15)', marginTop: 8 }}>
+            <button style={ctaStyle} onClick={() => { setActivePage(user ? 'dashboard' : 'products'); setOpen(false) }}>
+              {user ? 'Dashboard' : 'Giriş Yap'}
             </button>
           </div>
         </div>
       )}
-    </header>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .hidden-mobile { display: none !important; }
+          .show-mobile { display: block !important; }
+        }
+        @media (min-width: 769px) {
+          .show-mobile { display: none !important; }
+        }
+      `}</style>
+    </>
   )
 }

@@ -12,7 +12,12 @@
       "WebFetch(domain:lostenadem.netlify.app)",
       "Bash(brew install *)",
       "Bash(gh repo *)",
-      "WebFetch(domain:developers.etsy.com)"
+      "WebFetch(domain:developers.etsy.com)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(cp \"/Users/ademyusufadiguzel/.claude/projects/-Users-ademyusufadiguzel-Desktop-EtsyAutomation/918f4238-fb4c-4ef7-b9d8-b7d8f867ef77/tool-results/webfetch-1777644318268-na5v3m.bin\" /tmp/flowtsy.gz)",
+      "Bash(gunzip -f /tmp/flowtsy.gz)",
+      "Read(//tmp/**)",
+      "Bash(tar -xf /tmp/flowtsy -O etsy-project/project/Flowtsy.html)"
     ]
   }
 }
